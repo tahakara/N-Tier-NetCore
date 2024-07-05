@@ -12,5 +12,8 @@ namespace Buisness.Constants
         public static string ProductNameInvalid = "Urun ismi en az 2 karakter olmalidir";
         public static string MaintenanceTime = "Sistem bakimda";
         public static string ProductsListed = "Urunler listelendi";
+        public static string ProductCountOfCategoryError = "Bir kategoride en fazla 10 urun olabilir";
+        public static string ProductNameAlreadyExists = "Bu isimde bir ürün zaten var";
+        public static string CategoryLimitExceeded = "Kategori limiti asildigi icin yeni ürün eklenemiyor";
     }
 }
