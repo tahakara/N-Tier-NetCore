@@ -19,7 +19,7 @@ namespace Buisness.Concrete
         }
         public IDataResult<List<Category>> GetAll()
         {
-            return new SuccessDataResult<List<Category>>(_categoryDal.GetAll());
+            return new SuccessDataResult<List<Category>>(_categoryDal.GetAll().ToList());
         }
 
         public IDataResult<Category> GetById(int categoryId)
