@@ -28,11 +28,14 @@ namespace Buisness.BuisnessAspects.Autofac
         protected override void OnBefore(IInvocation invocation)
         {
             var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
-            foreach (var role in _roles)
+            if (roleClaims != null)
             {
-                if (roleClaims.Contains(role))
+                foreach (var role in _roles)
                 {
-                    return;
+                    if (roleClaims.Contains(role))
+                    {
+                        return;
+                    }
                 }
             }
             throw new Exception(Messages.AuthorizationDenied);
