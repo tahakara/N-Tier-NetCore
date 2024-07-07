@@ -1,10 +1,12 @@
 ﻿using Buisness.Abstract;
 using Buisness.Constants;
+using Core.Aspects.Aoutofac.Logging;
 using Core.Entities.Concretes;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
 using Entities.DTOs;
+using static Core.CrossCuttingConcerns.Logging.Log4Net.Loggers.DatabaseLogger;
 
 namespace Buisness.Concrete
 {
@@ -36,6 +38,7 @@ namespace Buisness.Concrete
             return new SuccessDataResult<User>(user, Messages.UserRegistered);
         }
 
+        //[LogAspect(typeof(FileLogger))]
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userService.GetByMail(userForLoginDto.Email);

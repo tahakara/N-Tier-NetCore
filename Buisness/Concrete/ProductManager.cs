@@ -2,6 +2,10 @@
 using Buisness.BuisnessAspects.Autofac;
 using Buisness.Constants;
 using Buisness.ValidationRules.FluentValidation;
+using Core.Aspects.Aoutofac.Caching;
+using Core.Aspects.Aoutofac.Logging;
+using Core.Aspects.Aoutofac.Performans;
+using Core.Aspects.Aoutofac.Transaction;
 using Core.Aspects.Aoutofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Buisness;
@@ -15,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Core.CrossCuttingConcerns.Logging.Log4Net.Loggers.DatabaseLogger;
 
 namespace Buisness.Concrete
 {
@@ -30,6 +35,7 @@ namespace Buisness.Concrete
 
         [SecuredOperation("product.add,admin")]
         [ValidationAspect(typeof(ProductValidator))]
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
         {
             IResult checkedRules = BuisnessRules.Run(
@@ -46,6 +52,8 @@ namespace Buisness.Concrete
 
         }
 
+        [CacheAspect]
+        //[LogAspect(typeof(FileLogger))]
         public IDataResult<List<Product>> GetAll()
         {
             if (DateTime.Now.Hour == 22)
@@ -61,6 +69,7 @@ namespace Buisness.Concrete
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == categoryId));
         }
 
+        [CacheAspect]
         public IDataResult<Product> GetById(int productId)
         {
             return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == productId));
@@ -82,6 +91,7 @@ namespace Buisness.Concrete
         }
 
         [ValidationAspect(typeof(ProductValidator))]
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Update(Product product)
         {
             throw new NotImplementedException();
@@ -114,5 +124,18 @@ namespace Buisness.Concrete
             return new SuccessResult();
         }
 
+        [TransactionalAspect]
+        [PerformanceAspect(5)]
+        public IResult AddTransactionalTest(Product product)
+        {
+            Add(product);
+            if (product.UnitPrice < 10)
+            {
+                throw new Exception("");
+            }
+            Add(product);
+
+            return new SuccessResult(Messages.ProductTransactionCoplete);
+        }
     }
 }

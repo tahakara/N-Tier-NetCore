@@ -23,5 +23,6 @@ namespace Buisness.Constants
         public static string UserNotFound = "Kullanici bulunamadi";
         public static string AccessTokenCreated = "Token olusturuldu";
         public static string UserRegistered = "Kullanici kayit oldu";
+        public static string ProductTransactionCoplete = "Urun Transaction tamamlandi";
     }
 }

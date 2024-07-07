@@ -17,7 +17,7 @@ namespace Core.Utilities.Interseptors
             var methodAttributes = type.GetMethod(method.Name)
                 .GetCustomAttributes<MethodInterceptionBaseAttribute>(true);
             classAttributes.AddRange(methodAttributes);
-            //classAttributes.Add(new ExceptionLogAspect(typeof(FileLogger)));
+            //classAttributes.Add(new ExceptionLogAspect(typeof(FileLogger))); // Add log Aspect aspect here
 
             return classAttributes.OrderBy(x => x.Priority).ToArray();
         }
